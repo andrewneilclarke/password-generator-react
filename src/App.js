@@ -1,23 +1,81 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import Switch from "react-switch"
 import './App.css';
 
 function App() {
+  const [length, setLength] = useState(8)
+
+
+  const [password, setPassword] = useState('')
+  const lower = true
+  const [numbers, setNumbers] = useState(false)
+  const [symbols, setSymbols] = useState(false)
+  const [cases, setCases] = useState(false)
+  const changeLength = (e) => {
+    setLength(e.target.value)
+  }
+
+  const getRandomLower = () => {
+    return String.fromCharCode(Math.floor(Math.random() * 26) + 97)
+  }
+  const getRandomUpper = () => {
+    return String.fromCharCode(Math.floor(Math.random() * 26) + 65)
+  }
+  const getRandomNumber = () => {
+    return String.fromCharCode(Math.floor(Math.random() * 10) + 48)
+  }
+
+  const getRandomSymbol = () => {
+    const symbolList = '!"%&@/();:-';
+    return symbolList[Math.floor(Math.random() * symbolList.length)]
+  }
+
+  const randomFunctions = {
+    lower: getRandomLower,
+    cases: getRandomUpper,
+    numbers: getRandomNumber,
+    symbols: getRandomSymbol
+  }
+
+  // console.log(getRandomLower(), getRandomNumber(), getRandomSymbol(), getRandomUpper())
+
+  const generatePassword = () => {
+    let pass = '';
+    const typesCount = lower + cases + numbers + symbols;
+    let options = [{ lower }, { cases }, { numbers }, { symbols }].filter(item => Object.values(item)[0]);
+    for (let i = 0; i < length; i += typesCount) {
+      options.forEach(option => {
+        const optionName = Object.keys(option)[0];
+        // console.log(optionName)
+        pass += randomFunctions[optionName]();
+      })
+    };
+    setPassword(pass)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h3 className="title">AC Password Generator</h3>
+      <div className="content">
+        <div className="section">Password Length
+          <div className="slidecontainer">
+            {length}
+            <input onChange={changeLength} type="range" min="8" max="20" value={length} />
+          </div>
+        </div>
+        <div className="section">Upper and Lower case
+          <Switch onChange={() => setCases(!cases)} checked={cases} onColor="#001833" />
+        </div>
+        <div className="section">Numbers
+          <Switch onChange={() => setNumbers(!numbers)} checked={numbers} onColor="#001833" />
+        </div>
+        <div className="section">Symbols
+          <Switch onChange={() => setSymbols(!symbols)} checked={symbols} onColor="#001833" />
+        </div>
+      </div>
+      <button onClick={generatePassword}>Create</button>
+      <p>{password}</p>
+      <button>Copy</button>
     </div>
   );
 }
