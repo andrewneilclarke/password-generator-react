@@ -11,20 +11,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: hsl(207, 66%, 35%);
+  background-color: hsl(207, 86%, 47%);
   font-family: 'Courier New', Courier, monospace;  
   font-weight: bolder;
   font-size: x-large;
-  color: hsl(207, 66%, 10%);
+  color: hsl(207, 86%, 10%);
 }
 
 .content {
+  width: 80vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  margin: 7em;
+  margin-top: 4em;
 }
 
 .title {
@@ -33,5 +34,26 @@
 }
 
 .section {
-  margin: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.password {
+  margin-top: 1.5em;
+}
+
+button {
+  margin-top: 2em;
+  padding: 10px;
+  border: none;
+  background-color: hsl(207, 86%, 25%);
+  border-radius: 10%;
+  color: hsl(207, 86%, 77%);
+}
+.slidecontainer input {
+  /* color: red;
+  border: 2px solid black;
+  background-color: green; */
 }

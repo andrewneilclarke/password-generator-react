@@ -4,9 +4,7 @@ import './App.css';
 
 function App() {
   const [length, setLength] = useState(8)
-
-
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('-------')
   const lower = true
   const [numbers, setNumbers] = useState(false)
   const [symbols, setSymbols] = useState(false)
@@ -26,7 +24,7 @@ function App() {
   }
 
   const getRandomSymbol = () => {
-    const symbolList = '!"%&@/();:-';
+    const symbolList = '!"%&@;:-';
     return symbolList[Math.floor(Math.random() * symbolList.length)]
   }
 
@@ -43,41 +41,53 @@ function App() {
     let pass = '';
     const typesCount = lower + cases + numbers + symbols;
     let options = [{ lower }, { cases }, { numbers }, { symbols }].filter(item => Object.values(item)[0]);
-    for (let i = 0; i < length; i += typesCount) {
-      options.forEach(option => {
-        const optionName = Object.keys(option)[0];
-        // console.log(optionName)
-        pass += randomFunctions[optionName]();
-      })
+
+    // for (let i = 0; i < length; i += typesCount) {
+    //   options.forEach(option => {
+    //     const optionName = Object.keys(option)[0];
+    //     // console.log(optionName)
+    //     pass += randomFunctions[optionName]();
+    //   })
+    // };
+
+    for (let i = 0; i < length; i++) {
+      const rand = Math.floor(Math.random() * options.length);
+      pass += randomFunctions[Object.keys(options[rand])[0]]();
+      // console.log(optionName)
     };
+
     setPassword(pass)
+  }
+
+  const copyToClip = () => {
+    alert(`${password} copied to clipboard`)
+    navigator.clipboard.writeText(password)
   }
 
   return (
     <div className="container">
       <h3 className="title">AC Password Generator</h3>
       <div className="content">
-        <div className="section">Password Length
+        <div className="section length">Password Length
           <div className="slidecontainer">
-            {length}
             <input onChange={changeLength} type="range" min="8" max="20" value={length} />
           </div>
+          {length}
         </div>
-        <div className="section">Upper and Lower case
-          <Switch onChange={() => setCases(!cases)} checked={cases} onColor="#001833" />
+        <div className="section">Uppercase
+          <Switch onChange={() => setCases(!cases)} checked={cases} onColor="#0A4B80" />
         </div>
         <div className="section">Numbers
-          <Switch onChange={() => setNumbers(!numbers)} checked={numbers} onColor="#001833" />
+          <Switch onChange={() => setNumbers(!numbers)} checked={numbers} onColor="#0A4B80" />
         </div>
         <div className="section">Symbols
-          <Switch onChange={() => setSymbols(!symbols)} checked={symbols} onColor="#001833" />
+          <Switch onChange={() => setSymbols(!symbols)} checked={symbols} onColor="#0A4B80" />
         </div>
       </div>
       <button onClick={generatePassword}>Create</button>
-      <p>{password}</p>
-      <button>Copy</button>
+      <p className="password">{password}</p>
+      <button onClick={copyToClip}>Copy</button>
     </div>
   );
 }
-
 export default App;
